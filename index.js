@@ -35,6 +35,12 @@ async function run() {
             res.send(categories);
         })
 
+        app.post('/category', async (req, res) => {
+            const category = req.body;
+            const result = await userCollection.insertOne(category);
+            res.send(result);
+        })
+
         app.get('/review', async (req, res) => {
             const query = {};
             const cursor = userReview.find(query);
@@ -44,8 +50,7 @@ async function run() {
         
         app.post('/review', async (req, res) => {
             const review = req.body;
-            console.log(review);
-            const result = await userReview.insertOne(review);
+            const result = await userReview.insertOne(review, new Date("YYYY-mm-dd HH:MM:ss"));
             res.send(result);
         })
     }
