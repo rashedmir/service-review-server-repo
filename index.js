@@ -50,7 +50,7 @@ async function run() {
         
         app.post('/review', async (req, res) => {
             const review = req.body;
-            const result = await userReview.insertOne(review, new Date("YYYY-mm-dd HH:MM:ss"));
+            const result = await userReview.insertOne(review, new Date());
             res.send(result);
         })
     }
