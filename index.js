@@ -41,6 +41,28 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/review/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const review = await userReview.findOne(query);
+            res.send(review);
+        })
+
+        app.put('/review/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const review = req.body;
+            const option = { upsert: true };
+            const updateReview = {
+                $set: {
+                    review: review.review,
+                    date: new Date()
+                }
+            }
+            const result = await userReview.updateOne(filter, updateReview, option);
+            res.send(result);
+        })
+
         app.get('/review', async (req, res) => {
             const query = {};
             const cursor = userReview.find(query);
@@ -51,6 +73,14 @@ async function run() {
         app.post('/review', async (req, res) => {
             const review = req.body;
             const result = await userReview.insertOne(review, new Date());
+            res.send(result);
+        })
+
+        app.delete('/review/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log('trying to delete', id);
+            const query = { _id: ObjectId(id) };
+            const result = await userReview.deleteOne(query);
             res.send(result);
         })
     }
